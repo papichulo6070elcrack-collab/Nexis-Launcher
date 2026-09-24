@@ -147,7 +147,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            padding: 1rem 1.5rem;
+            padding: 1rem 2rem;
             background: linear-gradient(135deg,#39FF14,#24c40b);
             color: #000;
             font-size: 1.1rem;
@@ -199,10 +199,11 @@
         .tarjeta-caracteristica h3 { font-size: 1rem; margin-bottom: 0.6rem; }
         .tarjeta-caracteristica p { color: var(--texto-secundario); font-size: 0.9rem; }
         .tarjeta-pasos {
-            padding: 1.5rem;
-            max-width: 500px;
+            padding: 2rem;
+            max-width: 550px;
             margin: 0 auto;
         }
+        .tarjeta-pasos h2 { text-align: center; margin-bottom: 2rem; }
         .paso { display: flex; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(57,255,20,0.1); }
         .paso-num {
             width: 28px; height: 28px;
@@ -440,7 +441,7 @@
         <div class="sin-sesion">
             <a href="#" class="activo" id="nav-inicio" onclick="irPagina('inicio'); return false;">Inicio</a>
             <a href="#" id="nav-caracteristicas" onclick="irPagina('caracteristicas'); return false;">Características</a>
-            <a href="#" id="nav-descargar" onclick="irPagina('descargar'); return false;">Descargar</a>
+            <a href="#" id="nav-descargar" onclick="irPagina('descargar'); return false;" class="activo">Descargar</a>
             <a href="#" id="nav-acerca" onclick="irPagina('acerca'); return false;">Acerca de</a>
             <button onclick="abrirModalLogin()">Iniciar sesión</button>
             <button onclick="abrirModalRegistro()">Registrarse</button>
@@ -449,7 +450,7 @@
         <div class="con-sesion">
             <a href="#" id="cnav-inicio" onclick="irPagina('inicio'); return false;">Inicio</a>
             <a href="#" id="cnav-caracteristicas" onclick="irPagina('caracteristicas'); return false;">Características</a>
-            <a href="#" id="cnav-descargar" onclick="irPagina('descargar'); return false;">Descargar</a>
+            <a href="#" id="cnav-descargar" onclick="irPagina('descargar'); return false;" class="activo">Descargar</a>
             <a href="#" id="cnav-acerca" onclick="irPagina('acerca'); return false;">Acerca de</a>
             <span class="etiqueta-usuario" id="usuario-nav">👤 Usuario</span>
             <span class="etiqueta-premium-nav" id="etiqueta-premium-nav" style="display:none;">💎 PREMIUM</span>
@@ -467,11 +468,11 @@
             <h1>Bienvenido a Nexis Launcher</h1>
             <p>El Launcher de Minecraft: Java Edition gratuito, ligero, 100% seguro y sin virus. Descarga versiones, instala mods y gestiona perfiles fácilmente.</p>
             
-            <!-- 🔽 BOTÓN DE DESCARGA DEL INSTALADOR -->
+            <!-- 🔽 BOTÓN DE DESCARGA AUTOMÁTICA -->
             <a href="https://github.com/papichulo6070elcrack-collab/Nexis-Launcher/releases/download/v2.0.0/Nexis.Launcher.Setup.2.0.0.exe" 
                download="Nexis-Launcher-Setup.exe"
                class="btn-descargar-principal">
-                ⬇️ Descargar Instalador Nexis Launcher v2.0.0
+                ⬇️ Descargar Nexis Launcher v2.0.0
             </a>
         </div>
         
@@ -508,21 +509,33 @@
 
     <!-- DESCARGAR -->
     <div id="pag-descargar" class="pagina">
-        <h2 class="titulo-seccion">📥 Cómo Descargar e Instalar</h2>
         <div class="tarjeta-pasos">
-            <div class="paso"><span class="paso-num">1</span><span>Pulsa el botón verde "Descargar Instalador Nexis Launcher".</span></div>
-            <div class="paso"><span class="paso-num">2</span><span>Espera a que termine la descarga del instalador.</span></div>
-            <div class="paso"><span class="paso-num">3</span><span>Abre el archivo <strong>Nexis-Launcher-Setup.exe</strong> y sigue los pasos.</span></div>
-            <div class="paso"><span class="paso-num">4</span><span>Inicia sesión con tu misma cuenta → Premium se sincroniza automáticamente.</span></div>
-        </div>
-        
-        <!-- 🔽 BOTÓN DE DESCARGA EN PÁGINA DESCARGA -->
-        <div style="text-align:center; margin-top:2rem;">
-            <a href="https://github.com/papichulo6070elcrack-collab/Nexis-Launcher/releases/download/v2.0.0/Nexis.Launcher.Setup.2.0.0.exe" 
-               download="Nexis-Launcher-Setup.exe"
-               class="btn-descargar-principal">
-                📥 Descargar Instalador — Nexis Launcher v2.0.0
-            </a>
+            <h2>📥 Cómo Descargar e Instalar</h2>
+            <div class="paso">
+                <span class="paso-num">1</span>
+                <span>Pulsa el botón verde "Descargar Nexis Launcher v2.0.0".</span>
+            </div>
+            <div class="paso">
+                <span class="paso-num">2</span>
+                <span>Espera a que termine la descarga automática.</span>
+            </div>
+            <div class="paso">
+                <span class="paso-num">3</span>
+                <span>Abre el archivo descargado — no necesita instalación compleja.</span>
+            </div>
+            <div class="paso">
+                <span class="paso-num">4</span>
+                <span>¡Listo! Crea tu perfil y ¡a jugar!</span>
+            </div>
+            
+            <!-- 🔽 BOTÓN DE DESCARGA EN ESTA PÁGINA -->
+            <div style="text-align:center; margin-top:2rem;">
+                <a href="https://github.com/papichulo6070elcrack-collab/Nexis-Launcher/releases/download/v2.0.0/Nexis.Launcher.Setup.2.0.0.exe" 
+                   download="Nexis-Launcher-Setup.exe"
+                   class="btn-descargar-principal">
+                    ⬇️ Descargar Nexis Launcher v2.0.0
+                </a>
+            </div>
         </div>
     </div>
 
