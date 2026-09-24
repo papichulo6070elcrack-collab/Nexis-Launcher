@@ -26,10 +26,7 @@
             min-height: 100vh;
             line-height: 1.6;
             background:
-                linear-gradient(
-                    rgba(15,23,42,0.75),
-                    rgba(15,23,42,0.90)
-                ),
+                linear-gradient(rgba(15,23,42,0.75), rgba(15,23,42,0.90)),
                 url("fondo-nexis.jpg");
             background-size: cover;
             background-position: center;
@@ -441,7 +438,7 @@
         <div class="sin-sesion">
             <a href="#" class="activo" id="nav-inicio" onclick="irPagina('inicio'); return false;">Inicio</a>
             <a href="#" id="nav-caracteristicas" onclick="irPagina('caracteristicas'); return false;">Características</a>
-            <a href="#" id="nav-descargar" onclick="irPagina('descargar'); return false;" class="activo">Descargar</a>
+            <a href="#" id="nav-descargar" onclick="irPagina('descargar'); return false;">Descargar</a>
             <a href="#" id="nav-acerca" onclick="irPagina('acerca'); return false;">Acerca de</a>
             <button onclick="abrirModalLogin()">Iniciar sesión</button>
             <button onclick="abrirModalRegistro()">Registrarse</button>
@@ -450,7 +447,7 @@
         <div class="con-sesion">
             <a href="#" id="cnav-inicio" onclick="irPagina('inicio'); return false;">Inicio</a>
             <a href="#" id="cnav-caracteristicas" onclick="irPagina('caracteristicas'); return false;">Características</a>
-            <a href="#" id="cnav-descargar" onclick="irPagina('descargar'); return false;" class="activo">Descargar</a>
+            <a href="#" id="cnav-descargar" onclick="irPagina('descargar'); return false;">Descargar</a>
             <a href="#" id="cnav-acerca" onclick="irPagina('acerca'); return false;">Acerca de</a>
             <span class="etiqueta-usuario" id="usuario-nav">👤 Usuario</span>
             <span class="etiqueta-premium-nav" id="etiqueta-premium-nav" style="display:none;">💎 PREMIUM</span>
@@ -468,7 +465,7 @@
             <h1>Bienvenido a Nexis Launcher</h1>
             <p>El Launcher de Minecraft: Java Edition gratuito, ligero, 100% seguro y sin virus. Descarga versiones, instala mods y gestiona perfiles fácilmente.</p>
             
-            <!-- 🔽 BOTÓN DE DESCARGA AUTOMÁTICA -->
+            <!-- BOTÓN DE DESCARGA EN INICIO -->
             <a href="https://github.com/papichulo6070elcrack-collab/Nexis-Launcher/releases/download/v2.0.0/Nexis.Launcher.Setup.2.0.0.exe" 
                download="Nexis-Launcher-Setup.exe"
                class="btn-descargar-principal">
@@ -517,19 +514,19 @@
             </div>
             <div class="paso">
                 <span class="paso-num">2</span>
-                <span>Espera a que termine la descarga automática.</span>
+                <span>Espera a que termine la descarga.</span>
             </div>
             <div class="paso">
                 <span class="paso-num">3</span>
-                <span>Abre el archivo descargado — no necesita instalación compleja.</span>
+                <span>Abre el archivo — no necesita instalación.</span>
             </div>
             <div class="paso">
                 <span class="paso-num">4</span>
                 <span>¡Listo! Crea tu perfil y ¡a jugar!</span>
             </div>
             
-            <!-- 🔽 BOTÓN DE DESCARGA EN ESTA PÁGINA -->
-            <div style="text-align:center; margin-top:2rem;">
+            <!-- BOTÓN DE DESCARGA DEBAJO DE LOS PASOS -->
+            <div style="text-align:center; margin-top: 2rem;">
                 <a href="https://github.com/papichulo6070elcrack-collab/Nexis-Launcher/releases/download/v2.0.0/Nexis.Launcher.Setup.2.0.0.exe" 
                    download="Nexis-Launcher-Setup.exe"
                    class="btn-descargar-principal">
