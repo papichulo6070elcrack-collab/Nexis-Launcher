@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Nexis Launcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --fondo: #0F172A;
+            --fondo-tarjeta: #1E293B;
+            --verde: #39FF14;
+            --rojo-boton: #FF3344;
+            --azul-discord: #5865F2;
+            --texto: #FFFFFF;
+            --texto-secundario: #94A3B8;
+            --borde: rgba(57,255,20,0.15);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--texto);
+            min-height: 100vh;
+            line-height: 1.6;
+            background:
+                linear-gradient(
+                    rgba(15,23,42,0.75),
+                    rgba(15,23,42,0.90)
+                ),
+                url("fondo-nexis.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        /* === BARRA DE NAVEGACIÓN === */
+        nav {
+            background: rgba(15,23,42,0.82);
+            backdrop-filter: blur(12px);
+            padding: 0.7rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--borde);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--verde);
+            cursor: pointer;
+        }
+        .logo-imagen {
+            height: 40px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+        .nav-enlaces {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            flex: 1;
+        }
+        .nav-enlaces a,
+        .nav-enlaces button {
+            padding: 0.5rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            color: var(--texto);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .nav-enlaces a:hover,
+        .nav-enlaces button:hover {
+            background: rgba(57,255,20,0.1);
+        }
+        .nav-enlaces a.activo {
+            background: var(--verde);
+            color: #000;
+            font-weight: 600;
+        }
+        .btn-discord {
+            background: var(--azul-discord) !important;
+            color: #fff !important;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 0.5rem 0.8rem !important;
+        }
+        .btn-discord:hover {
+            background: #4752C4 !important;
+        }
+        .etiqueta-usuario {
+            background: rgba(88,101,242,0.2);
+            color: #CddAff;
+            padding: 0.4rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        .contenedor {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        /* === PÁGINAS === */
+        .pagina { display: none; animation: aparecer 0.3s ease-out; }
+        .pagina.activa { display: block; }
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .inicio-contenido { text-align: center; padding: 2rem 0 3rem; }
+        .inicio-contenido h1 {
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            color: var(--verde);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 12px rgba(57,255,20,.45), 0 0 30px rgba(57,255,20,.25);
+            line-height: 1.3;
+        }
+        .inicio-contenido p {
+            color: var(--texto-secundario);
+            font-size: 1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+            padding: 0 0.5rem;
+        }
+        .btn-descargar-principal {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg,#39FF14,#24c40b);
+            color: #000;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 0 25px rgba(57,255,20,.30);
+            width: 90%;
+            max-width: 450px;
+            white-space: normal;
+            line-height: 1.4;
+        }
+        .btn-descargar-principal:hover { transform: scale(1.03); }
+        .seccion-noticias { margin-top: 3rem; }
+        .seccion-noticias h2 { text-align: center; font-size: 1.5rem; margin-bottom: 1rem; }
+        .cuadricula-noticias {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+        .tarjeta-noticia, .tarjeta-caracteristica, .tarjeta-pasos,
+        .tarjeta-acerca, .tarjeta-dash, .modal {
+            background: rgba(30,41,59,.88);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--borde);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 0 20px rgba(57,255,20,.08), 0 0 40px rgba(0,0,0,.35);
+        }
+        .etiqueta-oficial {
+            display: inline-block;
+            background: rgba(57,255,20,0.15);
+            color: var(--verde);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+        .tarjeta-noticia h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .tarjeta-noticia p { color: var(--texto-secundario); font-size: 0.95rem; }
+        .titulo-seccion { text-align: center; font-size: 1.5rem; margin-bottom: 2rem; }
+        .cuadricula-caracteristicas {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        .tarjeta-caracteristica h3 { font-size: 1rem; margin-bottom: 0.6rem; }
+        .tarjeta-caracteristica p { color: var(--texto-secundario); font-size: 0.9rem; }
+        .tarjeta-pasos {
+            padding: 1.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .paso { display: flex; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(57,255,20,0.1); }
+        .paso-num {
+            width: 28px; height: 28px;
+            background: var(--verde); color: #000;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .tarjeta-acerca {
+            padding: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .tarjeta-acerca p { color: var(--texto-secundario); margin-bottom: 1rem; }
+        .enlace-discord { color: var(--azul-discord); font-weight: 600; text-decoration: none; }
+        /* === DASHBOARD === */
+        .dashboard-header { margin-bottom: 2rem; }
+        .dashboard-header h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+        .dashboard-header p { color: var(--texto-secundario); }
+        .pestañas-dash {
+            display: flex; gap: 0.3rem; margin-bottom: 2rem;
+            background: var(--fondo-tarjeta); padding: 0.3rem; border-radius: 10px; flex-wrap: wrap;
+        }
+        .pestaña-dash {
+            padding: 0.6rem 1rem; border-radius: 8px;
+            background: transparent; border: none;
+            color: var(--texto-secundario); font-weight: 500;
+            cursor: pointer; transition: all 0.2s; font-family: inherit;
+            font-size: 0.9rem;
+        }
+        .pestaña-dash.activa { background: var(--verde); color: #000; font-weight: 600; }
+        .contenido-dash { display: none; }
+        .contenido-dash.visible { display: block; }
+        .etiqueta-beta {
+            display: inline-block;
+            background: var(--verde); color: #000;
+            font-size: 0.75rem; font-weight: 700;
+            padding: 0.15rem 0.5rem; border-radius: 6px; margin-left: 0.5rem;
+        }
+        .premium-lista { margin: 1rem 0; padding-left: 1.2rem; }
+        .premium-lista li {
+            color: var(--texto-secundario); font-size: 0.95rem;
+            list-style: none; position: relative; padding-left: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .premium-lista li::before { content: "✅"; position: absolute; left: 0; }
+        .btn-premium {
+            background: linear-gradient(90deg, #facc15, #fde047);
+            color: #000; font-weight: 600;
+            padding: 0.7rem 1.2rem; border: none;
+            border-radius: 8px; cursor: pointer; margin: 0.5rem 0;
+            width: 100%;
+        }
+        .fila-botones { display: flex; gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; }
+        .btn-pago, .btn-donar {
+            flex: 1; min-width: 200px;
+            padding: 0.8rem 1rem; border: none;
+            border-radius: 8px; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .btn-pago {
+            background: #009cde; color: #fff;
+        }
+        .btn-donar {
+            background: var(--verde); color: #000;
+        }
+        .btn-cerrar-grande {
+            width: 100%; padding: 0.9rem;
+            background: var(--rojo-boton); color: #fff;
+            border: none; border-radius: 8px;
+            font-weight: 600; font-size: 0.95rem;
+            margin-top: 1.5rem; cursor: pointer;
+        }
+        .fila-form { display: flex; gap: 1rem; margin-bottom: 1rem; flex-direction: column; }
+        .campo-form { flex: 1; min-width: 240px; }
+        .campo-form label {
+            display: block; font-size: 0.9rem;
+            color: var(--texto-secundario); margin-bottom: 0.4rem;
+        }
+        .campo-form input, .campo-form textarea {
+            width: 100%; padding: 0.75rem 1rem;
+            background: var(--fondo); border: 1px solid var(--borde);
+            border-radius: 8px; color: var(--texto);
+            font-size: 0.95rem; outline: none; font-family: inherit;
+        }
+        .campo-form textarea { min-height: 100px; resize: vertical; }
+        .btn-guardar-verde {
+            width: 100%; padding: 0.9rem;
+            background: var(--verde); color: #000;
+            border: none; border-radius: 8px;
+            font-weight: 600; font-size: 0.95rem;
+            cursor: pointer; margin-top: 0.5rem;
+        }
+        .opcion-priv {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 0; border-bottom: 1px solid var(--borde);
+        }
+        .switch {
+            width: 48px; height: 26px; background: var(--verde);
+            border-radius: 13px; position: relative; cursor: pointer; transition: all 0.2s;
+        }
+        .switch::after {
+            content: ''; position: absolute; top: 3px; right: 3px;
+            width: 20px; height: 20px; background: #fff;
+            border-radius: 50%; transition: all 0.2s;
+        }
+        .switch.inactivo { background: #2a3244; }
+        .switch.inactivo::after { right: auto; left: 3px; }
+        .caja-destacada {
+            background: rgba(57,255,20,0.05);
+            border: 1px solid rgba(250,204,21,0.2);
+            border-radius: 10px; padding: 1.2rem; margin: 1rem 0;
+        }
+        .caja-pago {
+            background: rgba(0,156,222,0.05);
+            border: 1px solid rgba(0,156,222,0.2);
+            border-radius: 10px; padding: 1.2rem; margin-top: 1rem;
+        }
+        .texto-premium { color: #facc15; font-weight: 600; }
+        .texto-inactivo { color: var(--rojo-boton); }
+        /* === MODALES === */
+        .modal-fondo {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            display: none; align-items: center; justify-content: center; z-index: 9999;
+            padding: 1rem;
+        }
+        .modal-fondo.visible { display: flex; }
+        .modal { width: 100%; max-width: 400px; padding: 1.5rem; }
+        .modal h3 { margin-bottom: 1.5rem; text-align: center; }
+        .modal input {
+            width: 100%; padding: 0.85rem; margin-bottom: 1rem;
+            background: var(--fondo); border: 1px solid var(--borde);
+            border-radius: 8px; color: #fff; font-size: 0.95rem;
+            outline: none; font-family: inherit;
+        }
+        .modal-botones { display: flex; gap: 0.8rem; margin-top: 0.5rem; }
+        .modal-botones button {
+            flex: 1; padding: 0.75rem; border-radius: 8px;
+            border: none; font-weight: 600; cursor: pointer; font-family: inherit;
+        }
+        .btn-cancelar { background: #2a3244; color: #fff; }
+        .btn-aceptar { background: var(--verde); color: #000; }
+        /* === EFECTOS ADICIONALES === */
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            pointer-events:none;
+            background:
+                radial-gradient(circle at top left, rgba(57,255,20,0.12), transparent 40%),
+                radial-gradient(circle at bottom right, rgba(57,255,20,0.08), transparent 40%);
+            z-index:-1;
+        }
+        /* === SESIONES === */
+        .sin-sesion { display: flex; }
+        .con-sesion { display: none; }
+        body.sesion-iniciada .sin-sesion { display: none !important; }
+        body.sesion-iniciada .con-sesion { display: flex !important; }
+
+        /* === PANTALLAS PEQUEÑAS - AJUSTES FINALES === */
+        @media (max-width: 480px) {
+            nav {
+                padding: 0.6rem 0.8rem;
+            }
+            .logo-imagen {
+                height: 35px;
+            }
+            .nav-enlaces a,
+            .nav-enlaces button {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.78rem;
+            }
+            .btn-discord {
+                padding: 0.4rem 0.6rem !important;
+                font-size: 0.78rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- MODALES -->
+<div id="modal-registro" class="modal-fondo">
+    <div class="modal">
+        <h3>📝 Crear Cuenta</h3>
+        <input type="text" id="reg-usuario" placeholder="Nombre de usuario">
+        <input type="email" id="reg-correo" placeholder="Correo electrónico">
+        <input type="password" id="reg-clave" placeholder="Contraseña">
+        <div class="modal-botones">
+            <button class="btn-cancelar" onclick="cerrarModalRegistro()">Cancelar</button>
+            <button class="btn-aceptar" onclick="registrarse()">Crear Cuenta</button>
+        </div>
+    </div>
+</div>
+<div id="modal-login" class="modal-fondo">
+    <div class="modal">
+        <h3>🔑 Iniciar Sesión</h3>
+        <input type="email" id="log-correo" placeholder="Correo electrónico">
+        <input type="password" id="log-clave" placeholder="Contraseña">
+        <div class="modal-botones">
+            <button class="btn-cancelar" onclick="cerrarModalLogin()">Cancelar</button>
+            <button class="btn-aceptar" onclick="iniciarSesion()">Entrar</button>
+        </div>
+    </div>
+</div>
+<!-- BARRA DE NAVEGACIÓN -->
+<nav>
+    <a href="#" onclick="irPagina('inicio'); return false;">
+        <img src="Nexis-Logo.png" alt="Nexis Launcher" class="logo-imagen">
+    </a>
+    <div class="nav-enlaces">
+        <div class="sin-sesion">
+            <a href="#" class="activo" id="nav-inicio" onclick="irPagina('inicio'); return false;">Inicio</a>
+            <a href="#" id="nav-caracteristicas" onclick="irPagina('caracteristicas'); return false;">Características</a>
+            <a href="#" id="nav-descargar" onclick="irPagina('descargar'); return false;">Descargar</a>
+            <a href="#" id="nav-acerca" onclick="irPagina('acerca'); return false;">Acerca de</a>
+            <button onclick="abrirModalLogin()">Iniciar sesión</button>
+            <button onclick="abrirModalRegistro()">Registrarse</button>
+            <a href="https://discord.gg/EPGHRcug4" target="_blank" rel="noopener" class="btn-discord">Discord</a>
+        </div>
+        <div class="con-sesion">
+            <a href="#" id="cnav-inicio" onclick="irPagina('inicio'); return false;">Inicio</a>
+            <a href="#" id="cnav-caracteristicas" onclick="irPagina('caracteristicas'); return false;">Características</a>
+            <a href="#" id="cnav-descargar" onclick="irPagina('descargar'); return false;">Descargar</a>
+            <a href="#" id="cnav-acerca" onclick="irPagina('acerca'); return false;">Acerca de</a>
+            <span class="etiqueta-usuario" id="usuario-nav">👤 Usuario</span>
+            <button onclick="cerrarSesion()">Cerrar sesión</button>
+            <a href="https://discord.gg/EPGHRcug4" target="_blank" rel="noopener" class="btn-discord">Discord</a>
+        </div>
+    </div>
+</nav>
+<!-- PÁGINAS -->
+<div class="contenedor">
+    <div id="pag-inicio" class="pagina activa">
+        <div class="inicio-contenido">
+            <h1>Bienvenido a Nexis Launcher</h1>
+            <p>El Launcher de Minecraft: Java Edition gratuito, ligero, y 100% seguro. Descarga versiones, instala mods y gestiona perfiles fácilmente.</p>
+            <button class="btn-descargar-principal" onclick="irPagina('descargar')">⬇️ Descargar Nexis Launcher v2.0.0</button>
+        </div>
+        <div class="seccion-noticias">
+            <h2>📰 Noticias Oficiales de Minecraft</h2>
+            <p style="text-align:center; color:var(--texto-secundario); margin-bottom:2rem;">Información verificada directamente desde minecraft.net</p>
+            <div class="cuadricula-noticias">
+                <div class="tarjeta-noticia">
+                    <span class="etiqueta-oficial">Oficial · Minecraft.net</span>
+                    <h3>Versiones y Actualizaciones</h3>
+                    <p>Entérate de las últimas versiones, Snapshots y Pre-releases de Mojang.</p>
+                </div>
+                <div class="tarjeta-noticia">
+                    <span class="etiqueta-oficial">Oficial · Minecraft.net</span>
+                    <h3>Minecraft Bedrock Edition</h3>
+                    <p>Información oficial sobre versiones, novedades y características.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="pag-caracteristicas" class="pagina">
+        <h2 class="titulo-seccion">✨ Características Principales</h2>
+        <div class="cuadricula-caracteristicas">
+            <div class="tarjeta-caracteristica"><h3>⚡ Rápido y Ligero</h3><p>Se inicia en segundos y consume pocos recursos.</p></div>
+            <div class="tarjeta-caracteristica"><h3>🔧 Gestión de Mods</h3><p>Agrega y quita mods fácilmente. Soporte para Forge y Fabric.</p></div>
+            <div class="tarjeta-caracteristica"><h3>👤 Perfiles Personalizados</h3><p>Crea perfiles con su propia versión y configuración.</p></div>
+            <div class="tarjeta-caracteristica"><h3>🛡️ 100% Seguro</h3><p>Sin virus, sin rastreadores. Tu información se queda en tu equipo.</p></div>
+            <div class="tarjeta-caracteristica"><h3>💻 Para cualquier PC</h3><p>Optimizado para funcionar bien incluso en equipos modestos.</p></div>
+            <div class="tarjeta-caracteristica"><h3>🎁 Gratis siempre</h3><p>Funciones básicas gratis. Beneficios extra disponibles en Premium.</p></div>
+        </div>
+    </div>
+    <div id="pag-descargar" class="pagina">
+        <h2 class="titulo-seccion">📥 Cómo Descargar e Instalar</h2>
+        <div class="tarjeta-pasos">
+            <div class="paso"><span class="paso-num">1</span><span>Pulsa el botón verde "Descargar Nexis Launcher".</span></div>
+            <div class="paso"><span class="paso-num">2</span><span>Espera a que termine la descarga.</span></div>
+            <div class="paso"><span class="paso-num">3</span><span>Abre el archivo — no necesita instalación.</span></div>
+            <div class="paso"><span class="paso-num">4</span><span>¡Listo! Crea tu perfil y ¡a jugar!</span></div>
+        </div>
+    </div>
+    <div id="pag-acerca" class="pagina">
+        <h2 class="titulo-seccion">ℹ️ Acerca de Nexis Launcher</h2>
+        <div class="tarjeta-acerca">
+            <p>Nexis Launcher es un proyecto gratuito diseñado para facilitar el acceso a Minecraft. Sin publicidad, sin virus y sin costos ocultos en sus funciones básicas.</p>
+            <p>Algunos beneficios adicionales requieren una suscripción Premium.</p>
+            <p>Únete a nuestra comunidad: <a href="https://discord.gg/EPGHRcug4" target="_blank" rel="noopener" class="enlace-discord">Discord Oficial</a></p>
+        </div>
+    </div>
+    <div id="pag-dashboard" class="pagina">
+        <div class="dashboard-header">
+            <h1 id="saludo-usuario">Hola, Usuario</h1>
+            <p>Bienvenid@ a tu nueva Dashboard</p>
+        </div>
+        <div class="pestañas-dash">
+            <button class="pestaña-dash" id="tab-inicio" onclick="cambiarPestanaDash('inicio')">🏠 Inicio</button>
+            <button class="pestaña-dash" id="tab-general" onclick="cambiarPestanaDash('general')">👤 General</button>
+            <button class="pestaña-dash" id="tab-privacidad" onclick="cambiarPestanaDash('privacidad')">🔒 Privacidad</button>
+            <button class="pestaña-dash" id="tab-seguridad" onclick="cambiarPestanaDash('seguridad')">🛡️ Seguridad</button>
+            <button class="pestaña-dash" id="tab-perfil" onclick="cambiarPestanaDash('perfil')">😊 Perfil</button>
+        </div>
+        <div id="dash-inicio" class="contenido-dash visible">
+            <div class="tarjeta-dash">
+                <h3>Inicio <span class="etiqueta-beta">BETA</span></h3>
+                <p style="margin:1rem 0;"><strong>Suscripción Premium:</strong> <span id="estado-premium" class="texto-inactivo">Inactiva</span></p>
+                <p style="color:var(--texto-secundario);">Último acceso: Hoy a las <span id="hora-acceso">--:--</span></p>
+            </div>
+            <div class="tarjeta-dash caja-destacada">
+                <p style="font-size:1.05rem;"><span style="color:#facc15;">💎</span> <strong>Obtén Nexis Premium</strong></p>
+                <ul class="premium-lista">
+                    <li>Skins ilimitadas y exclusivas</li>
+                    <li>Capas ilimitadas y exclusivas</li>
+                    <li>Sin anuncios</li>
+                    <li>Soporte prioritario</li>
+                    <li>Funciones exclusivas</li>
+                </ul>
+                <button class="btn-premium">Ver límites de Skins y Capas →</button>
+            </div>
+            <div class="tarjeta-dash caja-pago">
+                <p><strong>💳 Pagar Premium / Donar con PayPal</strong></p>
+                <p style="font-size:.9rem;color:var(--texto-secundario);margin:.5rem 0;">Al pagar tu suscripción, Premium se activará automáticamente en tu cuenta.</p>
+                <div class="fila-botones">
+                    <button class="btn-pago">💳 Pagar Premium por PayPal →</button>
+                    <button class="btn-donar">❤️ Hacer una donación →</button>
+                </div>
+            </div>
+            <button class="btn-cerrar-grande" onclick="cerrarSesion()">Cerrar sesión</button>
+        </div>
+        <div id="dash-general" class="contenido-dash">
+            <div class="tarjeta-dash">
+                <h3 style="margin-bottom:1.5rem;">General</h3>
+                <div class="fila-form">
+                    <div class="campo-form">
+                        <label>Nombre de usuario</label>
+                        <input type="text" id="campo-usuario" value="Usuario">
+                    </div>
+                    <div class="campo-form">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="campo-correo" value="correo@ejemplo.com">
+                    </div>
+                </div>
+                <div class="campo-form">
+                    <label>Sobre mí</label>
+                    <textarea id="campo-sobre">No has escrito nada sobre ti</textarea>
+                </div>
+                <button class="btn-guardar-verde" onclick="guardarGeneral()">Guardar cambios</button>
+            </div>
+        </div>
+        <div id="dash-privacidad" class="contenido-dash">
+            <div class="tarjeta-dash">
+                <h3 style="margin-bottom:1.5rem;">Privacidad</h3>
+                <div class="opcion-priv"><span>Permitir que te encuentren</span><div class="switch inactivo" id="sw-buscar" onclick="toggleSwitch(this)"></div></div>
+                <div class="opcion-priv"><span>Permitir solicitudes de amistad</span><div class="switch inactivo" id="sw-amistad" onclick="toggleSwitch(this)"></div></div>
+                <div class="opcion-priv"><span>Perfil público</span><div class="switch" id="sw-perfil" onclick="toggleSwitch(this)"></div></div>
+            </div>
+        </div>
+        <div id="dash-seguridad" class="contenido-dash">
+            <div class="tarjeta-dash">
+                <h3 style="margin-bottom:1.5rem;">Seguridad</h3>
+                <div class="fila-form">
+                    <div class="campo-form">
+                        <label>Contraseña actual</label>
+                        <input type="password" id="clave-actual" placeholder="••••••••">
+                    </div>
+                </div>
+                <div class="fila-form">
+                    <div class="campo-form">
+                        <label>Nueva contraseña</label>
+                        <input type="password" id="clave-nueva" placeholder="••••••••">
+                    </div>
+                    <div class="campo-form">
+                        <label>Confirmar contraseña</label>
+                        <input type="password" id="clave-confirma" placeholder="••••••••">
+                    </div>
+                </div>
+                <button class="btn-guardar-verde" onclick="cambiarContrasena()">Cambiar contraseña</button>
+            </div>
+        </div>
+        <div id="dash-perfil" class="contenido-dash">
+            <div class="tarjeta-dash">
+                <h3 style="margin-bottom:1.5rem;">Perfil</h3>
+                <p style="color:var(--texto-secundario);">Aquí podrás personalizar tu Skin y Capa próximamente.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const USUARIO_KEY = 'nexis_usuario';
+const CUENTAS_KEY = 'nexis_cuentas';
+let cuentaActiva = null;
+window.onload = function() {
+    const guardado = localStorage.getItem(USUARIO_KEY);
+    if (guardado) {
+        const cuenta = JSON.parse(guardado);
+        iniciarSesionDirecto(cuenta);
+    }
+};
+function obtenerCuentas() {
+    return JSON.parse(localStorage.getItem(CUENTAS_KEY) || '[]');
+}
+function guardarCuentas(cuentas) {
+    localStorage.setItem(CUENTAS_KEY, JSON.stringify(cuentas));
+}
+function actualizarCuenta(cuenta) {
+    const cuentas = obtenerCuentas();
+    const idx = cuentas.findIndex(c => c.correo === cuenta.correo);
+    if (idx !== -1) { cuentas[idx] = cuenta; guardarCuentas(cuentas); }
+    localStorage.setItem(USUARIO_KEY, JSON.stringify(cuenta));
+}
+function abrirModalRegistro() { document.getElementById('modal-registro').classList.add('visible'); }
+function cerrarModalRegistro() { document.getElementById('modal-registro').classList.remove('visible'); }
+function abrirModalLogin() { document.getElementById('modal-login').classList.add('visible'); }
+function cerrarModalLogin() { document.getElementById('modal-login').classList.remove('visible'); }
+function irPagina(nombre) {
+    document.querySelectorAll('.nav-enlaces a').forEach(a => a.classList.remove('activo'));
+    document.querySelectorAll('.pagina').forEach(p => p.classList.remove('activa'));
+    const publicas = ['inicio', 'caracteristicas', 'descargar', 'acerca'];
+    if (publicas.includes(nombre)) {
+        document.getElementById(`pag-${nombre}`).classList.add('activa');
+        const enlaceSin = document.getElementById(`nav-${nombre}`);
+        const enlaceCon = document.getElementById(`cnav-${nombre}`);
+        if (enlaceSin) enlaceSin.classList.add('activo');
+        if (enlaceCon) enlaceCon.classList.add('activo');
+        return;
+    }
+    if (nombre === 'dashboard' && cuentaActiva) {
+        document.getElementById('pag-dashboard').classList.add('activa');
+        cambiarPestanaDash('inicio');
+    }
+}
+function cambiarPestanaDash(nombre) {
+    document.querySelectorAll('.contenido-dash').forEach(d => d.classList.remove('visible'));
+    document.querySelectorAll('.pestaña-dash').forEach(b => b.classList.remove('activa'));
+    if (nombre === 'inicio') {
+        document.getElementById('dash-inicio').classList.add('visible');
+        document.getElementById('tab-inicio').classList.add('activa');
+    } else if (nombre === 'general') {
+        document.getElementById('dash-general').classList.add('visible');
+        document.getElementById('tab-general').classList.add('activa');
+    } else if (nombre === 'privacidad') {
+        document.getElementById('dash-privacidad').classList.add('visible');
+        document.getElementById('tab-privacidad').classList.add('activa');
+    } else if (nombre === 'seguridad') {
+        document.getElementById('dash-seguridad').classList.add('visible');
+        document.getElementById('tab-seguridad').classList.add('activa');
+    } else if (nombre === 'perfil') {
+        document.getElementById('dash-perfil').classList.add('visible');
+        document.getElementById('tab-perfil').classList.add('activa');
+    }
+}
+function registrarse() {
+    const usuario = document.getElementById('reg-usuario').value.trim();
+    const correo = document.getElementById('reg-correo').value.trim();
+    const clave = document.getElementById('reg-clave').value;
+    if (!usuario || !correo || !clave) return alert('⚠️ Completa todos los campos');
+    const cuentas = obtenerCuentas();
+    if (cuentas.some(c => c.correo === correo)) return alert('⚠️ Este correo ya está registrado');
+    const ahora = new Date();
+    const hora = ahora.toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'});
+    const nueva = {
+        usuario, correo, clave,
+        sobre: 'No has escrito nada sobre ti',
+        ultimoAcceso: hora,
+        premium: false,
+        privacidad: { buscar: false, amistad: false, perfilPublico: true }
+    };
+    cuentas.push(nueva);
+    guardarCuentas(cuentas);
+    iniciarSesionDirecto(nueva);
+    cerrarModalRegistro();
+    alert('✅ ¡Cuenta creada con éxito!');
+}
+function iniciarSesion() {
+    const correo = document.getElementById('log-correo').value.trim();
+    const clave = document.getElementById('log-clave').value;
+    const cuentas = obtenerCuentas();
+    const cuenta = cuentas.find(c => c.correo === correo && c.clave === clave);
+    if (!cuenta) return alert('⚠️ Correo o contraseña incorrectos');
+    iniciarSesionDirecto(cuenta);
+    cerrarModalLogin();
+    alert('✅ ¡Sesión iniciada!');
+}
+function iniciarSesionDirecto(cuenta) {
+    cuentaActiva = cuenta;
+    localStorage.setItem(USUARIO_KEY, JSON.stringify(cuenta));
+    document.body.classList.add('sesion-iniciada');
+    document.getElementById('usuario-nav').textContent = '👤 ' + cuenta.usuario;
+    document.getElementById('saludo-usuario').textContent = 'Hola, ' + cuenta.usuario;
+    document.getElementById('campo-usuario').value = cuenta.usuario;
+    document.getElementById('campo-correo').value = cuenta.correo;
+    document.getElementById('campo-sobre').value = cuenta.sobre;
+    document.getElementById('hora-acceso').textContent = cuenta.ultimoAcceso;
+    document.querySelectorAll('.pagina').forEach(p => p.classList.remove('activa'));
+    document.getElementById('pag-dashboard').classList.add('activa');
+    cambiarPestanaDash('inicio');
+    actualizarSwitches();
+    actualizarEstadoPremium();
+}
+function cerrarSesion() {
+    localStorage.removeItem(USUARIO_KEY);
+    document.body.classList.remove('sesion-iniciada');
+    cuentaActiva = null;
+    document.querySelectorAll('.pagina').forEach(p => p.classList.remove('activa'));
+    document.getElementById('pag-inicio').classList.add('activa');
+    document.querySelectorAll('.nav-enlaces a').forEach(a => a.classList.remove('activo'));
+    document.getElementById('nav-inicio').classList.add('activo');
+    document.getElementById('campo-usuario').value = '';
+    document.getElementById('campo-correo').value = '';
+    document.getElementById('campo-sobre').value = '';
+    alert('✅ Sesión cerrada correctamente');
+}
+function guardarGeneral() {
+    if (!cuentaActiva) return;
+    cuentaActiva.usuario = document.getElementById('campo-usuario').value.trim();
+    cuentaActiva.correo = document.getElementById('campo-correo').value.trim();
+    cuentaActiva.sobre = document.getElementById('campo-sobre').value;
+    actualizarCuenta(cuentaActiva);
+    document.getElementById('usuario-nav').textContent = '👤 ' + cuentaActiva.usuario;
+    document.getElementById('saludo-usuario').textContent = 'Hola, ' + cuentaActiva.usuario;
+    alert('✅ Cambios guardados');
+}
+function cambiarContrasena() {
+    if (!cuentaActiva) return;
+    const act = document.getElementById('clave-actual').value;
+    const nva = document.getElementById('clave-nueva').value;
+    const cnf = document.getElementById('clave-confirma').value;
+    if (cuentaActiva.clave !== act) return alert('⚠️ Contraseña actual incorrecta');
+    if (nva !== cnf) return alert('⚠️ Las contraseñas no coinciden');
+    if (!nva || nva.length < 4) return alert('⚠️ Escribe una contraseña válida');
+    cuentaActiva.clave = nva;
+    actualizarCuenta(cuentaActiva);
+    alert('✅ Contraseña cambiada');
+    document.getElementById('clave-actual').value = '';
+    document.getElementById('clave-nueva').value = '';
+    document.getElementById('clave-confirma').value = '';
+}
+function toggleSwitch(sw) {
+    sw.classList.toggle('inactivo');
+    if (!cuentaActiva) return;
+    if (sw.id === 'sw-buscar') cuentaActiva.privacidad.buscar = !sw.classList.contains('inactivo');
+    if (sw.id === 'sw-amistad') cuentaActiva.privacidad.amistad = !sw.classList.contains('inactivo');
+    if (sw.id === 'sw-perfil') cuentaActiva.privacidad.perfilPublico = !sw.classList.contains('inactivo');
+    actualizarCuenta(cuentaActiva);
+}
+function actualizarSwitches() {
+    if (!cuentaActiva) return;
+    document.getElementById('sw-buscar').classList.toggle('inactivo', !cuentaActiva.privacidad.buscar);
+    document.getElementById('sw-amistad').classList.toggle('inactivo', !cuentaActiva.privacidad.amistad);
+    document.getElementById('sw-perfil').classList.toggle('inactivo', !cuentaActiva.privacidad.perfilPublico);
+}
+function actualizarEstadoPremium() {
+    if (!cuentaActiva) return;
+    const estado = document.getElementById('estado-premium');
+    if (cuentaActiva.premium) {
+        estado.textContent = 'Activa ✅';
+        estado.classList.remove('texto-inactivo');
+        estado.classList.add('texto-premium');
+    } else {
+        estado.textContent = 'Inactiva';
+        estado.classList.remove('texto-premium');
+        estado.classList.add('texto-inactivo');
+    }
+}
+</script>
+</body>
+</html>
